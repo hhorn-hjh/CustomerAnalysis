@@ -1,0 +1,98 @@
+<!doctype html>
+<html class="x-admin-sm">
+    <head>
+        <meta charset="UTF-8">
+        <title>后台登录-X-admin2.2</title>
+        <meta name="renderer" content="webkit|ie-comp|ie-stand">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+        <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+        <link rel="stylesheet" href="./css/font.css">
+        <link rel="stylesheet" href="./css/xadmin.css">
+
+        <script src="http://code.jquery.com/jquery-latest.js"></script>
+    </head>
+    <body>
+        <div class="layui-fluid">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-body ">
+                            
+                            <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+                            <div id="main" style="width: 100%;height:500px;"></div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
+        <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        let myChart = echarts.init(document.getElementById('main'));
+        $.ajax({
+            type:'POST',
+            url:'http://127.0.0.1:5000/testnumber',
+            dataType:'json',
+            success: function (da) {
+            for(var i = 0; i < 30; ++i){
+                console.log(da[i]);
+            }
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: '基础雷达图'
+            },
+            tooltip: {},
+            legend: {
+                data: ['一级用户', '二级用户','三级用户','四级用户','五级用户']
+            },
+            radar: {
+                // shape: 'circle',
+                indicator: [
+                   { name: '客户关系长度L', max: 2},
+                   { name: '消费时间间隔R', max: 2},
+                   { name: '消费频率F', max: 3},
+                   { name: '飞行里程M', max: 3},
+                   { name: '平均折扣系数C', max: 2.5}
+                   
+                ]
+            },
+            series: [{
+                name: '客户类聚',
+                type: 'radar',
+                // areaStyle: {normal: {}},
+                data : [
+                    {
+                        value : [da[0],	da[6],	da[12],	da[18], da[24]],
+                        name : '一级用户'
+                    },
+                     {
+                        value : [da[1],	da[7],	da[13],	da[19],	da[25]],
+                        name : '二级用户'
+                    },
+					{
+					    value : [da[2],	da[8],	da[14],	da[20],	da[26]],
+					    name : '三级用户'
+					},
+					{
+					    value : [da[3],	da[9],	da[15],	da[21], da[27]],
+					    name : '四级用户'
+					},
+					{
+					    value : [da[4],	da[10],	da[16],	da[22],	da[28]],
+					    name : '五级用户'
+					}
+                ]
+            }]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+          }
+        });
+    </script>
+    </body>
+</html>
